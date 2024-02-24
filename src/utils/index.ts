@@ -8,6 +8,16 @@ import remarkHtml from 'remark-html';
 const blogsDir = path.join(process.cwd(), 'src', 'content', 'blogs');
 const portfoliosDir = path.join(process.cwd(), 'src', 'content', 'portfolios');
 
+const getBlogNames = () => fs.readdirSync(blogsDir);
+const getPortfolioNames = () => fs.readdirSync(portfoliosDir);
+
+const markdownToHtml = async (content: string) => {
+  const result = await remark().use(remarkHtml).use(remarkGfm).process(content);
+  return result.toString();
+};
+
+///////////////////
+
 export function delay(s: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, s * 1000);
@@ -15,9 +25,9 @@ export function delay(s: number) {
 }
 
 export function getBlogs() {
-  const blogNames = fs.readdirSync(blogsDir);
+  const blogNames = getBlogNames();
 
-  const blogs = blogNames.map((name) => {
+  return blogNames.map((name) => {
     const filePath = path.join(blogsDir, name);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
 
@@ -26,14 +36,12 @@ export function getBlogs() {
 
     return { ...content };
   });
-
-  return blogs;
 }
 
 export function getPortfolios() {
-  const portfoliosNames = fs.readdirSync(portfoliosDir);
+  const portfoliosNames = getPortfolioNames();
 
-  const portfolios = portfoliosNames.map((name) => {
+  return portfoliosNames.map((name) => {
     const filePath = path.join(portfoliosDir, name);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
 
@@ -42,16 +50,6 @@ export function getPortfolios() {
 
     return { ...content };
   });
-
-  return portfolios;
-}
-
-//////////////////
-
-async function markdownToHtml(content: string) {
-  const result = await remark().use(remarkHtml).use(remarkGfm).process(content);
-
-  return result.toString();
 }
 
 export async function getBlogSlug(slug: string) {
@@ -76,4 +74,11 @@ export async function getPortfolioSlug(slug: string) {
   const htmlContent = await markdownToHtml(m.content);
 
   return { ...m, content: htmlContent };
+}
+
+export function getContentCount() {
+  return {
+    blogs: getBlogNames().length,
+    portfolios: getPortfolioNames().length
+  };
 }
