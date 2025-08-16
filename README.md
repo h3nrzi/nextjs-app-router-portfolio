@@ -1,4 +1,4 @@
-# nextjs-bilingual-portfolio
+# Portfolio
 
 A modern, bilingual (Persian/English) portfolio website built with Next.js 14, featuring a blog system and portfolio showcase.
 
