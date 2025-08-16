@@ -154,7 +154,3 @@ highlights: ['Feature 1', 'Feature 2', 'Feature 3']
 
 - Typography plugin for markdown content
 - RTL support for Persian content
-
-## License
-
-Private project - All rights reserved.
